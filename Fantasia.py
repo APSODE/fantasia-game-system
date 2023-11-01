@@ -21,6 +21,7 @@ class Fantasia:
                 herb_data.round = self._round
 
         self.apply_profit()
+        self.init_tradeable_animal()
 
     def set_tradeable_animal(self, name: str, level: int):
         self._tradeable_animals.update({name: level})
@@ -36,5 +37,9 @@ class Fantasia:
     @property
     def round(self) -> int:
         return self._round
+
+    @property
+    def tradeable_animals(self) -> dict:
+        return self._tradeable_animals
 
 

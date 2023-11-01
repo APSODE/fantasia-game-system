@@ -1,68 +1,64 @@
 import tkinter as tk
+from tkinter import Tk
+
+
+from Fantasia import Fantasia
 from FantasiaSetting import USER_COLORS
 from src.UserData import UserData
 
 
+# class FantasiaUI:
+#     def __init__(self, root=None, user_data=None):
+#
+#         self.root = root
+#         if root:
+#             self.root.title(f"판타지아 게임 - {user_data.color} 유저")
+#
+#         self.user_data = user_data
+#
+#         if root:
+#             self.create_ui()
+#
+#     def create_ui(self):
+#         self.main_frame = tk.Frame(self.root)
+#         self.main_frame.pack()
+#
+#         self.current_round_label = tk.Label(self.main_frame, text=f"현재 라운드: {self.fantasia.round}")
+#         self.current_round_label.pack()
+#
+#         self.set_tradeable_animal_button = tk.Button(self.main_frame, text="거래 가능 동물 설정", command=self.set_tradeable_animal)
+#         self.set_tradeable_animal_button.pack()
+#
+#         self.init_tradeable_animal_button = tk.Button(self.main_frame, text="거래 가능 동물 초기화", command=self.init_tradeable_animal)
+#         self.init_tradeable_animal_button.pack()
+#
+#     def set_tradeable_animal(self):
+#         animal_name = input("거래 가능 동물 이름을 입력하세요: ")
+#         animal_level = int(input("동물 레벨을 입력하세요: "))
+#         self.fantasia.set_tradeable_animal(animal_name, animal_level)
+#
+#     def init_tradeable_animal(self):
+#         self.fantasia.init_tradeable_animal()
+#
+#     def update_round_label(self):
+#         self.current_round_label.config(text=f"현재 라운드: {self.fantasia.round}")
+#
+#     def start_game(self):
+#         self.root.mainloop()
+
 class FantasiaUI:
-    def __init__(self, root=None, user_data=None):
-
+    def __init__(self, root: Tk):
         self.root = root
-        if root:
-            self.root.title(f"판타지아 게임 - {user_data.color} 유저")
+        self.fantasia = Fantasia()
+        self.user_color = "RED"  # 기본 설정값
+        self.user_data = self.fantasia.get_user(self.user_color)  # 기본 설정값
 
-        self.user_data = user_data
-
-        if root:
-            self.create_ui()
-
-    def create_ui(self):
-        self.main_frame = tk.Frame(self.root)
-        self.main_frame.pack()
-
-        self.current_round_label = tk.Label(self.main_frame, text=f"현재 라운드: {self.fantasia.round}")
-        self.current_round_label.pack()
-
-        self.set_tradeable_animal_button = tk.Button(self.main_frame, text="거래 가능 동물 설정", command=self.set_tradeable_animal)
-        self.set_tradeable_animal_button.pack()
-
-        self.init_tradeable_animal_button = tk.Button(self.main_frame, text="거래 가능 동물 초기화", command=self.init_tradeable_animal)
-        self.init_tradeable_animal_button.pack()
-
-    def set_tradeable_animal(self):
-        animal_name = input("거래 가능 동물 이름을 입력하세요: ")
-        animal_level = int(input("동물 레벨을 입력하세요: "))
-        self.fantasia.set_tradeable_animal(animal_name, animal_level)
-
-    def init_tradeable_animal(self):
-        self.fantasia.init_tradeable_animal()
-
-    def update_round_label(self):
-        self.current_round_label.config(text=f"현재 라운드: {self.fantasia.round}")
-
-    def start_game(self):
-        self.root.mainloop()
-
-class Fantasia:
-    def __init__(self):
-
-
-    def set_tradeable_animal(self, name, level):
-        self._tradeable_animals[name] = level
-
-    def init_tradeable_animal(self):
-        self._tradeable_animals.clear()
-
-    @property
-    def round(self):
-        return self._round
-
-    def __init__(self, root, user_data):
-        self.root = root
-        self.root.title(f"판타지아 게임 - {user_data.color} 유저")
-
-        self.user_data = user_data
-
+        self.root.title(f"판타지아 게임 - {self.user_data.color} 유저")
         self.create_ui()
+
+
+        self.fantasia.set_tradeable_animal("퍼프", 1)
+
 
     def create_ui(self):
         self.main_frame = tk.Frame(self.root)
@@ -216,13 +212,15 @@ class Fantasia:
                 for label in self.main_frame.winfo_children():
                     if label["text"] == animal_info:
                         label.config(text=animal_info)
+
         for tool_name, tool_data in self.user_data.tools.items():
             tool_info = f"{tool_name} (조각: {tool_data.piece})"
             for label in self.main_frame.winfo_children():
                 if label["text"] == tool_info:
                     label.config(text=tool_info)
 
+
 if __name__ == "__main__":
-    root = tk.Tk()
+    root = Tk()
     fantasia_ui = FantasiaUI(root)
-    fantasia_ui.start_game()
+    fantasia_ui.root.mainloop()
