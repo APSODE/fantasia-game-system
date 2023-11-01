@@ -11,6 +11,9 @@ class Fantasia:
         self._turn = 0  # 0 ~ 5는 각각의 유저에 대응
         self._tradeable_animals = {}
 
+    def get_current_turn_user(self) -> UserData:
+        return self._user_datas.get([key for key in self._user_datas.keys()][self._turn])
+
     def change_turn(self):
         if self._turn == 5:
             self._turn = 0
