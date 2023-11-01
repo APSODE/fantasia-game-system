@@ -38,6 +38,14 @@ class UserData:
             "빗자루": MagicalToolData.create_object(**TOOL_COST_DATA.get("빗자루"))
         }
 
+    @staticmethod
+    def create_object(color: str, mana: int = 300) -> "UserData":
+        return UserData(
+            color = color,
+            mana = mana
+        )
+
+
     @property
     def color(self):
         return self._color
@@ -73,3 +81,81 @@ class UserData:
     @tools.setter
     def tools(self, value: Dict[str, MagicalToolData]):
         self._tools = value
+
+    def sell_herb(self, name: str, amount: int):
+        herb_dto = self._herbs.get(name)
+
+        if herb_dto.amount >= amount:
+            herb_dto.amount -= amount
+            self._mana += herb_dto.cost * amount
+
+        else:
+            raise ValueError("해당 허브를 소지하고 있지 않거나 갯수가 부족합니다.")
+
+    def buy_herb(self, name: str, amount: int):
+        herb_dto = self._herbs.get(name)
+        total_cost = herb_dto.cost * amount
+
+        if total_cost <= self._mana:
+            self._mana -= total_cost
+
+        else:
+            raise ValueError("소지금이 부족합니다.")
+
+    def sell_animal(self, name: str, level: int, amount: int):
+        animal_dto = self._animals.get(name)[level - 1]
+
+        if animal_dto.amount >= amount:
+            animal_dto.amount -= amount
+            self._mana += animal_dto.sell_cost * amount
+
+        else:
+            raise ValueError("해당 마법 동물을 소유하고 있지 않거나 수가 부족합니다.")
+
+    def buy_animal(self, name: str, level: int, amount: int):
+        animal_dto = self._animals.get(name)[level - 1]
+        total_cost = animal_dto.buy_cost * amount
+
+        if self._mana >= total_cost:
+            self._mana -= total_cost
+            animal_dto.amount += amount
+
+        else:
+            raise ValueError("소지금이 부족합니다.")
+
+    def train_animal(self, name: str, level: int, amount: int):
+        # self._animals.get(<animal name>)의 인덱스는 1~3레벨이 각각 0~2에 해당함
+        # 이 함수를 사용전에 level값으로 들어오는 값이 0 ~ 1의 값만 들어올수 있도록 강제해야함
+        animal_dto = self._animals.get(name)[level - 1]
+        trained_animal_dto = self._animals.get(name)[level]
+        total_train_cost = trained_animal_dto.buy_cost * amount
+
+        if animal_dto.amount >= amount and self._mana >= total_train_cost:
+            animal_dto.amount -= amount
+            trained_animal_dto += amount
+
+            self._mana -= total_train_cost
+
+        else:
+            raise ValueError("훈련시킬 대상의 동물의 수가 부족하거나 훈련 비용이 부족합니다.")
+
+    def buy_tool_piece(self, name: str, amount: int):
+        tool_dto = self._tools.get(name)
+        total_cost = tool_dto.piece_cost * amount
+
+        if self._mana >= total_cost:
+            self._mana -= total_cost
+            tool_dto.piece += amount
+
+        else:
+            raise ValueError("소지금이 부족합니다.")
+
+    def activate_tool(self, name: str):
+        tool_dto = self._tools.get(name)
+
+        if tool_dto.piece >= tool_dto.need_piece and self._mana >= tool_dto.craft_cost:
+            self._mana -= tool_dto.craft_cost
+            tool_dto.activate()
+
+        else:
+            raise ValueError("마법 도구 합성에 필요한 조각이 부족하거나 합성 비용이 부족합니다.")
