@@ -215,6 +215,11 @@ TOOL_COST_DATA = {
 }
 
 USER_COLORS = ["RED", "YELLOW", "GREEN", "BLUE", "WHITE", "BLACK"]
+
+HERB_CARD = "herb"
+TOOL_CARD = "tool"
+ANIMAL_CARD = "animal"
+
 #================== 절대 변경하지마 절대 변경하지마 절대 변경하지마  ==================#
 #================== 해당 데이터들은 실시간 반영이 아닌 상수임 ==================#
 
