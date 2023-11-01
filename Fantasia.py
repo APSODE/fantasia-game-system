@@ -31,17 +31,7 @@ class Fantasia:
     def apply_profit(self):
         # 월급 지급 코드 (유저 전체)
         for user_dto in self._user_datas.values():
-            total_profit = 0
-            for tool_dto in user_dto.tools.values():
-                if tool_dto.is_activated:
-                    total_profit += tool_dto.profit
-
-            for animal_dtos in user_dto.animals.values():
-                for animal_dto in animal_dtos:
-                    if animal_dto.amount > 0:
-                        total_profit += animal_dto.profit
-
-            total_profit -= user_dto.get_drugs_debuff()
+            user_dto.mana += user_dto.get_current_round_profit()
 
     @property
     def round(self) -> int:

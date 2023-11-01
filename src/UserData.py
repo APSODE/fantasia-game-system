@@ -188,3 +188,19 @@ class UserData:
 
     def get_drugs_debuff(self) -> int:
         return self._drugs // 10
+
+    def get_current_round_profit(self) -> int:
+        total_profit = 300  # 기본 월급 300
+
+        for tool_dto in self._tools.values():
+            if tool_dto.is_activated:
+                total_profit += tool_dto.profit
+
+        for animal_dtos in self._animals.values():
+            for animal_dto in animal_dtos:
+                if animal_dto.amount > 0:
+                    total_profit += animal_dto.profit
+
+        total_profit -= self.get_drugs_debuff()
+        return total_profit
+
