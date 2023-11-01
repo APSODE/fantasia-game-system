@@ -9,10 +9,12 @@ class UserData:
     def __init__(self,
                  color: str,
                  mana: int,
+                 drugs: int,
                  ):
 
         self._color = color
         self._mana = mana
+        self._drugs = drugs
         self._herbs = {
             "캐오닌": MagicalHerbData.create_initial_value(HERB_COST_DATA.get("캐오닌")),
             "바카스": MagicalHerbData.create_initial_value(HERB_COST_DATA.get("바카스")),
@@ -39,10 +41,11 @@ class UserData:
         }
 
     @staticmethod
-    def create_object(color: str, mana: int = 300) -> "UserData":
+    def create_object(color: str, mana: int = 300, drugs: int = 0) -> "UserData":
         return UserData(
             color = color,
-            mana = mana
+            mana = mana,
+            drugs = drugs
         )
 
 
@@ -57,6 +60,14 @@ class UserData:
     @mana.setter
     def mana(self, value: int):
         self._mana = value
+
+    @property
+    def drugs(self) -> int:
+        return self._drugs
+
+    @drugs.setter
+    def drugs(self, value: int):
+        self._drugs = value
 
     @property
     def herbs(self) -> Dict[str, MagicalHerbData]:
@@ -159,3 +170,22 @@ class UserData:
 
         else:
             raise ValueError("마법 도구 합성에 필요한 조각이 부족하거나 합성 비용이 부족합니다.")
+
+    def use_drugs(self, amount: int):
+        if 3000 - (self._drugs + amount) >= 0:
+            self._drugs += amount
+            self._mana += amount
+
+        else:
+            raise ValueError("더이상 마법 약물을 복용할 수 없습니다.")
+
+    def use_medicine(self, amount: int):
+        if self._drugs - amount >= 0:
+            self._drugs -= amount
+            self._mana -= amount
+
+        else:
+            raise ValueError("마법 약물을 사용한 이상으로 회복 약물을 복용할 수 없습니다.")
+
+    def get_drugs_debuff(self) -> int:
+        return self._drugs // 10
