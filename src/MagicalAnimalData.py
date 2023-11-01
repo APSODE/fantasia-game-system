@@ -39,6 +39,14 @@ class MagicalAnimalData:
         return self._name
 
     @property
+    def round(self) -> int:
+        return self._round
+
+    @property
+    def level(self) -> int:
+        return self._level
+
+    @property
     def buy_cost(self) -> Optional[int]:
         """현재 레벨에 대한 구매 비용"""
         return self._buy_cost_data.get(f"{self._level}")
