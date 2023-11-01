@@ -43,6 +43,8 @@ class Fantasia:
 
             total_profit -= user_dto.get_drugs_debuff()
 
-
+    @property
+    def round(self) -> int:
+        return self._round
 
 
