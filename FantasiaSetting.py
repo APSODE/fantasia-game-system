@@ -1,3 +1,5 @@
+#================== 해당 데이터들은 실시간 반영이 아닌 상수임 ==================#
+#================== 절대 변경하지마 절대 변경하지마 절대 변경하지마  ==================#
 HERB_COST_DATA = {
     # round 별로 금액 지정
     "캐오닌": {
@@ -177,31 +179,43 @@ TOOL_COST_DATA = {
     "마법부적": {
         "need_piece": 1,
         "piece_cost": 300,
-        "profit": 0
+        "profit": 0,
+        "craft_cost": 15
     },
     "마법지도": {
         "need_piece": 1,
         "piece_cost": 500,
-        "profit": 0
+        "profit": 0,
+        "craft_cost": 25
     },
     "마법양초": {
         "need_piece": 3,
         "piece_cost": 500,
-        "profit": 50
+        "profit": 50,
+        "craft_cost": 100
     },
     "마법거울": {
         "need_piece": 2,
         "piece_cost": 2000,
-        "profit": 150
+        "profit": 150,
+        "craft_cost": 300
     },
     "지팡이": {
         "need_piece": 2,
         "piece_cost": 4000,
-        "profit": 350
+        "profit": 350,
+        "craft_cost": 700
     },
     "빗자루": {
         "need_piece": 4,
         "piece_cost": 4000,
-        "profit": 800
+        "profit": 800,
+        "craft_cost": 1600
     },
 }
+
+USER_COLORS = ["RED", "YELLOW", "GREEN", "BLUE", "WHITE", "BLACK"]
+#================== 절대 변경하지마 절대 변경하지마 절대 변경하지마  ==================#
+#================== 해당 데이터들은 실시간 반영이 아닌 상수임 ==================#
+
+
