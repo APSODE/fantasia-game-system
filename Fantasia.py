@@ -14,6 +14,9 @@ class Fantasia:
     def get_current_turn_user(self) -> UserData:
         return self._user_datas.get([key for key in self._user_datas.keys()][self._turn])
 
+    def get_user(self, color: str) -> UserData:
+        return self._user_datas.get(color)
+
     def change_turn(self):
         if self._turn == 5:
             self._turn = 0
