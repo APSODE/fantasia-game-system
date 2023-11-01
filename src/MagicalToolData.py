@@ -52,6 +52,10 @@ class MagicalToolData:
     def profit(self) -> int:
         return self._profit
 
+    @property
+    def is_activated(self) -> bool:
+        return self._is_activated
+
     def add_piece(self, amount: int):
         self._piece += amount
 
