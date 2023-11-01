@@ -1,64 +1,56 @@
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 
 class MagicalAnimalData:
-    def __init__(self,
-                 name: str,
-                 round: int,
-                 level: int,
-                 buy_cost_data: Dict[str, int],
-                 sell_cost_data: Dict[str, int],
-                 profit_data: Dict[str, int]):
-
-        self._name = name
-        self._round = round
-        self._level = level
-        self._buy_cost_data = buy_cost_data
-        self._sell_cost_data = sell_cost_data
-        self._profit_data = profit_data
+    def __init__(self, buy_cost: int, sell_cost: int, profit: int):
+        self._buy_cost = buy_cost
+        self._sell_cost = sell_cost
+        self._profit = profit
 
     @staticmethod
-    def create_object(name: str,
-                      round: int,
-                      buy_cost_data: Dict[str, int],
-                      sell_cost_data: Dict[str, int],
-                      profit_data: Dict[str, int],
-                      level: int = 1) -> "MagicalAnimalData":
-
+    def create_object(buy_cost: int, sell_cost: int, profit: int):
         return MagicalAnimalData(
-            name = name,
-            round = round,
-            buy_cost_data = buy_cost_data,
-            sell_cost_data = sell_cost_data,
-            profit_data = profit_data,
-            level = level
+            buy_cost = buy_cost,
+            sell_cost = sell_cost,
+            profit = profit
         )
 
-    @property
-    def name(self) -> str:
-        return self._name
+    @staticmethod
+    def create_initial_value(animal_cost_data: Dict[str, Dict[str, int]]) -> List["MagicalAnimalData"]:
+        temp = []
+
+        for level in range(1, 4):
+            temp.append(
+                MagicalAnimalData.create_object(
+                    buy_cost = animal_cost_data.get("buy").get(f"{level}"),
+                    sell_cost = animal_cost_data.get("sell").get(f"{level}"),
+                    profit = animal_cost_data.get("profit").get(f"{level}")
+                )
+            )
+
+        return temp
 
     @property
-    def round(self) -> int:
-        return self._round
+    def buy_cost(self) -> int:
+        return self._buy_cost
+
+    @buy_cost.setter
+    def buy_cost(self, value: int):
+        self._buy_cost = value
 
     @property
-    def level(self) -> int:
-        return self._level
+    def sell_cost(self) -> int:
+        return self._sell_cost
+
+    @sell_cost.setter
+    def sell_cost(self, value: int):
+        self._sell_cost = value
 
     @property
-    def buy_cost(self) -> Optional[int]:
-        """현재 레벨에 대한 구매 비용"""
-        return self._buy_cost_data.get(f"{self._level}")
+    def profit(self) -> int:
+        return self._profit
 
-    @property
-    def sell_cost(self) -> Optional[int]:
-        """현재 레벨에 대한 판매 수익"""
-        return self._sell_cost_data.get(f"{self._level}")
-
-    @property
-    def profit(self) -> Optional[int]:
-        """현재 레벨에 대한 월 수익"""
-        return self._profit_data.get(f"{self._level}")
-
+    @profit.setter
+    def profit(self, value: int):
+        self._profit = value
 
