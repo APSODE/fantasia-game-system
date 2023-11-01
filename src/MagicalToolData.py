@@ -6,20 +6,29 @@ class MagicalToolData:
                  piece: int,
                  need_piece: int,
                  piece_cost: int,
+                 craft_cost: int,
                  profit: int):
 
         self._piece = piece
         self._need_piece = need_piece
         self._piece_cost = piece_cost
+        self._craft_cost = craft_cost
         self._profit = profit
+        self._purchaseable = False
         self._is_activated = False
 
     @staticmethod
-    def create_object(need_piece: int, piece_cost: int, profit: int, piece: int = 0) -> "MagicalToolData":
+    def create_object(need_piece: int,
+                      piece_cost: int,
+                      craft_cost: int,
+                      profit: int,
+                      piece: int = 0) -> "MagicalToolData":
+
         return MagicalToolData(
             piece = piece,
             need_piece = need_piece,
             piece_cost = piece_cost,
+            craft_cost = craft_cost,
             profit = profit
         )
 
@@ -36,6 +45,10 @@ class MagicalToolData:
         return self._piece_cost
 
     @property
+    def craft_cost(self) -> int:
+        return self._craft_cost
+
+    @property
     def profit(self) -> int:
         return self._profit
 
@@ -44,6 +57,9 @@ class MagicalToolData:
 
     def activate(self):
         self._is_activated = True
+
+    def purchaseable(self):
+        self._purchaseable = True
 
 
 

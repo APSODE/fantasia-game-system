@@ -2,17 +2,19 @@ from typing import Optional, Dict, List
 
 
 class MagicalAnimalData:
-    def __init__(self, buy_cost: int, sell_cost: int, profit: int):
+    def __init__(self, buy_cost: int, sell_cost: int, profit: int, amount: int):
         self._buy_cost = buy_cost
         self._sell_cost = sell_cost
         self._profit = profit
+        self._amount = amount
 
     @staticmethod
-    def create_object(buy_cost: int, sell_cost: int, profit: int):
+    def create_object(buy_cost: int, sell_cost: int, profit: int, amount: int = 0):
         return MagicalAnimalData(
             buy_cost = buy_cost,
             sell_cost = sell_cost,
-            profit = profit
+            profit = profit,
+            amount = amount
         )
 
     @staticmethod
@@ -29,6 +31,14 @@ class MagicalAnimalData:
             )
 
         return temp
+
+    @property
+    def amount(self) -> int:
+        return self._amount
+
+    @amount.setter
+    def amount(self, value: int):
+        self._amount = value
 
     @property
     def buy_cost(self) -> int:
