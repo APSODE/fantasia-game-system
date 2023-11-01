@@ -20,6 +20,8 @@ class Fantasia:
             for herb_data in user_data.herbs.values():
                 herb_data.round = self._round
 
+        self.apply_profit()
+
     def set_tradeable_animal(self, name: str, level: int):
         self._tradeable_animals.update({name: level})
 

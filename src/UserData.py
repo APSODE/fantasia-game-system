@@ -48,7 +48,6 @@ class UserData:
             drugs = drugs
         )
 
-
     @property
     def color(self):
         return self._color
