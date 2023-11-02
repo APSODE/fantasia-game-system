@@ -108,6 +108,7 @@ class UserData:
 
         if total_cost <= self._mana:
             self._mana -= total_cost
+            herb_dto.amount += amount
 
         else:
             raise ValueError("소지금이 부족합니다.")
@@ -155,7 +156,7 @@ class UserData:
 
         if self._mana >= total_cost:
             self._mana -= total_cost
-            tool_dto.piece += amount
+            tool_dto.add_piece(amount)
 
         else:
             raise ValueError("소지금이 부족합니다.")
