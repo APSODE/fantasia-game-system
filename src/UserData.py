@@ -137,29 +137,38 @@ class UserData:
     def train_animal(self, name: str, level: int, amount: int):
         # self._animals.get(<animal name>)의 인덱스는 1~3레벨이 각각 0~2에 해당함
         # 이 함수를 사용전에 level값으로 들어오는 값이 0 ~ 1의 값만 들어올수 있도록 강제해야함
+        if level == 3:
+            raise ValueError("최대 레벨의 동물은 훈련할 수 없습니다.")
+
         animal_dto = self._animals.get(name)[level - 1]
         trained_animal_dto = self._animals.get(name)[level]
         total_train_cost = trained_animal_dto.buy_cost * amount
 
-        if animal_dto.amount >= amount and self._mana >= total_train_cost:
-            animal_dto.amount -= amount
-            trained_animal_dto += amount
+        if animal_dto.amount < amount:
+            raise ValueError("훈련시킬 대상의 동물의 수가 부족합니다.")
+        if self._mana < total_train_cost:
+            raise ValueError("훈련 비용이 부족합니다.")
 
-            self._mana -= total_train_cost
+        animal_dto.amount -= amount
+        trained_animal_dto.amount += amount
 
-        else:
-            raise ValueError("훈련시킬 대상의 동물의 수가 부족하거나 훈련 비용이 부족합니다.")
+        self._mana -= total_train_cost
 
     def buy_tool_piece(self, name: str, amount: int):
         tool_dto = self._tools.get(name)
         total_cost = tool_dto.piece_cost * amount
 
-        if self._mana >= total_cost:
-            self._mana -= total_cost
-            tool_dto.add_piece(amount)
+        if tool_dto.is_activated:
+            raise ValueError("이미 활성화된 마법 도구는 더 이상 구매 할 수 없습니다.")
 
-        else:
+        if self._mana <= total_cost:
             raise ValueError("소지금이 부족합니다.")
+
+        if tool_dto.need_piece - (tool_dto.piece + amount) < 0:
+            raise ValueError("최대 소지 가능 갯수를 초과합니다.")
+
+        self._mana -= total_cost
+        tool_dto.add_piece(amount)
 
     def activate_tool(self, name: str):
         tool_dto = self._tools.get(name)

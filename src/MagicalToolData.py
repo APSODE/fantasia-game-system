@@ -36,6 +36,10 @@ class MagicalToolData:
     def piece(self) -> int:
         return self._piece
 
+    @piece.setter
+    def piece(self, value: int):
+        self._piece = value
+
     @property
     def need_piece(self) -> int:
         return self._need_piece
