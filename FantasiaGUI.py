@@ -291,10 +291,11 @@ class TradeableAnimalsController(Toplevel):
 
 
 class AdminController(Toplevel):
-    def __init__(self, master: Tk, fantasia_instance: Fantasia):
+    def __init__(self, master: Tk, fantasia_instance: Fantasia, callback: Callable):
         super().__init__(master = master)
         self._fantasia = fantasia_instance
         self._components = _ComponentContainer()
+        self._callback: Callable = callback
         self._set_initial_window()
         self._set_var()
         self._render_component()
@@ -557,7 +558,7 @@ class AdminController(Toplevel):
             command = lambda: self._edit_user_data(btn_type = "add")
         )
         add_button.grid(row = 0, column = 1, padx = 10, pady = 5)
-        self._components.add_button("add_button", set_button)
+        self._components.add_button("add_button", add_button)
 
         minus_button = Button(
             self._components.get_frame("button_frame"),
@@ -567,7 +568,17 @@ class AdminController(Toplevel):
             command = lambda: self._edit_user_data(btn_type = "minus")
         )
         minus_button.grid(row = 0, column = 2, padx = 10, pady = 5)
-        self._components.add_button("minus_button", set_button)
+        self._components.add_button("minus_button", minus_button)
+
+        close_button = Button(
+            self._components.get_frame("button_frame"),
+            text = "완료",
+            width = 7,
+            height = 2,
+            command = self._close
+        )
+        close_button.grid(row = 0, column = 3, padx = 20, pady = 15)
+        self._components.add_button("close_button", close_button)
 
     def _set_entry(self):
         default_string = StringVar()
@@ -615,6 +626,10 @@ class AdminController(Toplevel):
         user_card.config(state = "disabled")
         card_name.config(state = "disabled")
         card_level.config(state = "disabled")
+
+    def _close(self):
+        self._callback()
+        self.destroy()
 
     def _edit_user_data(self, btn_type: Literal["add", "minus", "set"]):
         entry_object = self._components.get_entry("value_input")
@@ -912,15 +927,16 @@ class FantasiaGUI(Tk):
     def _value_test(self):
         AdminController(
             master = self,
-            fantasia_instance = self._fantasia
+            fantasia_instance = self._fantasia,
+            callback = self._update_labels_data
         )
 
     def _show_admin_controller(self, *args):
         AdminController(
             master = self,
-            fantasia_instance = self._fantasia
+            fantasia_instance = self._fantasia,
+            callback = self._update_labels_data
         )
-        self._update_labels_data()
 
     def _set_combobox(self):
         pass
